@@ -1,8 +1,8 @@
 import {BarChart, Bar, XAxis, YAxis, Legend} from 'recharts'
 
 const VaccinationCoverage = props => {
-  const {dataDetails} = props
-  const {vaccineDate, dose1, dose2} = dataDetails
+  const {dataDetails1} = props
+  const {vaccineDate, dose1, dose2} = dataDetails1
 
   const DataFormatter = number => {
     if (number > 1000) {
