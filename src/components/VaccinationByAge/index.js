@@ -1,8 +1,8 @@
 import {PieChart, Pie, Legend, Cell} from 'recharts'
 
 const VaccinationByAge = props => {
-  const {dataDetails} = props
-  const {count, age} = dataDetails
+  const {dataDetails2} = props
+  const {count, age} = dataDetails2
 
   return (
     <PieChart width={1000} height={300}>
