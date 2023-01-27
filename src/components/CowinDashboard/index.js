@@ -15,7 +15,9 @@ const apiStatusConstants = {
 
 class CowinDashboard extends Component {
   state = {
-    dataItems: [],
+    dataItems1: [],
+    dataItems2: [],
+    dataItems3: [],
     apiStatus: apiStatusConstants.initial,
   }
 
@@ -33,16 +35,23 @@ class CowinDashboard extends Component {
     const response = await fetch(apiUrl)
     if (response.ok) {
       const data = await response.json()
-      const updatedData = data.map(eachData => ({
-        last7DaysVaccination: eachData.last_7_days_vaccination,
+      const updatedDataLast = data.last_7_days_vaccination.map(eachData => ({
         vaccineDate: eachData.vaccine_date,
         dose1: eachData.dose_1,
         dose2: eachData.dose_2,
-        vaccinationByAge: eachData.vaccination_by_age,
-        vaccinationByGender: eachData.vaccination_by_gender,
+      }))
+      const updatedDataAge = data.vaccination_by_age.map(eachData => ({
+        age: eachData.age,
+        count: eachData.count,
+      }))
+      const updatedDataGender = data.vaccination_by_gender.map(eachData => ({
+        count: eachData.count,
+        gender: eachData.gender,
       }))
       this.setState({
-        dataItems: updatedData,
+        dataItems1: updatedDataLast,
+        dataItems2: updatedDataAge,
+        dataItems3: updatedDataGender,
         apiStatus: apiStatusConstants.success,
       })
     } else {
@@ -69,26 +78,20 @@ class CowinDashboard extends Component {
   )
 
   renderChartView = () => {
-    const {dataItems} = this.state
+    const {dataItems1, dataItems2, dataItems3} = this.state
     return (
       <div>
         <div>
           <h1>Vaccination Coverage</h1>
-          {dataItems.last7DaysVaccination.map(eachItem => (
-            <VaccinationCoverage dataDetails={eachItem} />
-          ))}
+          <VaccinationCoverage dataDetails1={dataItems1} />
         </div>
         <div>
           <h1>Vaccination by gender</h1>
-          {dataItems.vaccinationByGender.map(eachItem => (
-            <VaccinationByGender dataDetails={eachItem} />
-          ))}
+          <VaccinationByGender dataDetails3={dataItems3} />
         </div>
         <div>
           <h1>Vaccination by Age</h1>
-          {dataItems.vaccinationByAge.map(eachItem => (
-            <VaccinationByAge dataDetails={eachItem} />
-          ))}
+          <VaccinationByAge dataDetails2={dataItems2} />
         </div>
       </div>
     )
